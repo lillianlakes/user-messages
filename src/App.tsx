@@ -7,8 +7,8 @@ import UserGet from './UserGet';
 function App() {
   return (
     <div className="App">
-      <UserNew/>
-      <MessageNew/>
+      {/* <UserNew/>
+      <MessageNew/> */}
       <UserGet/>
     </div>
   );

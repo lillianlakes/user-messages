@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery ,useQuery } from '@apollo/client';
 
 interface message {
   ID: string,
@@ -18,43 +18,59 @@ interface userData {
   user:user
 }
 
+// const GET_USER = gql`
+//   query GetUser($username: ID!) {
+//     user(username: $username)
+//     username
+//     first_name
+//     last_name
+//     message {
+//       id
+//       body
+//       user {
+//         username
+//       }
+//     }
+//   }
+// `;
+
+
 const GET_USER = gql`
-  query GetUser($username: ID!) {
-    user(username: $username)
-    username
-    first_name
-    last_name
-    message {
-      id
-      body
-      user {
-        username
-      }
+  query user($username: ID!) {
+    user(username: $username){
+      username
+      first_name
+      last_name
     }
   }
 `;
 
 function UserGet() {
 
-  const [queryString, setQueryString] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
-  const {loading, error, data} = useQuery<userData>(GET_USER);
+  const [que, {loading, error, data} ]= useLazyQuery<userData>(GET_USER, {variables:{username}});
 
-  if (loading || error || !data) { return <div>Loading…</div> };
+  console.log(data," IAM")
 
-
-  <form className="Search-Form" onSubmit={handleSubmit}>
-    <label htmlFor="search">Search: </label>
-    <input name="term" id="term" 
-    onChange={handleChange}>
-      
-    </input>
-    <button type="submit">Get SW Facts</button>
-  </form>
-
-  function handleSearch(term: string) {
-    setQueryString(term)
+  function submit(evt:  React.FormEvent){
+     evt.preventDefault()
+     que({variables:{username}})
   }
+  if (loading || error || !data) { return <div>
+    
+      
+    <form className="Search-Form"  onSubmit={ submit } >
+
+      <input name="username" id="username" onChange={(evt) => setUsername(evt.target.value) }/>
+      <button type="submit">Get SW Facts</button>
+    </form>
+      
+      
+      </div> };
+
+
+
 
   return (
     <div>
