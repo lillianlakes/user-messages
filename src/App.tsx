@@ -1,11 +1,15 @@
 import React from 'react';
 import './App.css';
-import UserMessages from './UserMessages';
+import UserNew from './UserNew';
+import MessageNew from './MessageNew';
+import UserGet from './UserGet';
 
 function App() {
   return (
     <div className="App">
-      <UserMessages/>
+      <UserNew/>
+      <MessageNew/>
+      <UserGet/>
     </div>
   );
 }
